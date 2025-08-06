@@ -1,0 +1,1065 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="stripe-python">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="引入 这是一道数据结构题。 维护一个数列，支持插入、删除、查排名、查数、前驱、后继。 以下，用 nnn 表示操作数，www 表示值域。 Subtask 1：n≤103n \le 10^3n≤103 暴力 O(n2)O(n^2)O(n2) 维护即可。 Subtask 2：n≤104n \le 10^4n≤104 采用 std::vector 和二分维护一个有序序列。由于 memmove 的小常数，可">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅谈平衡树">
+<meta property="og:url" content="http://example.com/2025/08/06/%E6%B5%85%E8%B0%88%E5%B9%B3%E8%A1%A1%E6%A0%91/index.html">
+<meta property="og:site_name" content="Stripe-Python&#39;s Blog">
+<meta property="og:description" content="引入 这是一道数据结构题。 维护一个数列，支持插入、删除、查排名、查数、前驱、后继。 以下，用 nnn 表示操作数，www 表示值域。 Subtask 1：n≤103n \le 10^3n≤103 暴力 O(n2)O(n^2)O(n2) 维护即可。 Subtask 2：n≤104n \le 10^4n≤104 采用 std::vector 和二分维护一个有序序列。由于 memmove 的小常数，可">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.luogu.com.cn/upload/image_hosting/nguctn8p.png">
+<meta property="og:image" content="https://cdn.luogu.com.cn/upload/image_hosting/a7l2oiu5.png">
+<meta property="og:image" content="https://cdn.luogu.com.cn/upload/image_hosting/b5m91b3l.png">
+<meta property="og:image" content="https://cdn.luogu.com.cn/upload/image_hosting/y4eugduh.png">
+<meta property="og:image" content="https://cdn.luogu.com.cn/upload/image_hosting/a8gw13qt.png">
+<meta property="og:image" content="https://cdn.luogu.com.cn/upload/image_hosting/ls4ionx1.png">
+<meta property="article:published_time" content="2025-08-05T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-08-06T01:26:21.416Z">
+<meta property="article:author" content="stripe-python">
+<meta property="article:tag" content="理论">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.luogu.com.cn/upload/image_hosting/nguctn8p.png">
+  
+  
+  
+  <title>浅谈平衡树 - Stripe-Python&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="浅谈平衡树"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-08-06 00:00" pubdate>
+          2025年8月6日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          56 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">浅谈平衡树</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>引入</h1>
+<p>这是一道数据结构题。</p>
+<p>维护一个数列，支持插入、删除、查排名、查数、前驱、后继。</p>
+<p>以下，用 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> 表示操作数，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi></mrow><annotation encoding="application/x-tex">w</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span></span></span></span> 表示值域。</p>
+<h2 id="Subtask-1：n-le-10-3">Subtask 1：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≤</mo><msup><mn>10</mn><mn>3</mn></msup></mrow><annotation encoding="application/x-tex">n \le 10^3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7719em;vertical-align:-0.136em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span></span></span></span></h2>
+<p>暴力 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span> 维护即可。</p>
+<h2 id="Subtask-2：n-le-10-4">Subtask 2：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≤</mo><msup><mn>10</mn><mn>4</mn></msup></mrow><annotation encoding="application/x-tex">n \le 10^4</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7719em;vertical-align:-0.136em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">4</span></span></span></span></span></span></span></span></span></span></span></h2>
+<p>采用 <code>std::vector</code> 和二分维护一个有序序列。由于 <code>memmove</code> 的小常数，可以卡常通过。</p>
+<h2 id="Subtask-3：n-le-10-5-w-le-10-5">Subtask 3：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≤</mo><msup><mn>10</mn><mn>5</mn></msup><mo separator="true">,</mo><mi>w</mi><mo>≤</mo><msup><mn>10</mn><mn>5</mn></msup></mrow><annotation encoding="application/x-tex">n \le 10^5, w \le 10^5</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7719em;vertical-align:-0.136em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.0085em;vertical-align:-0.1944em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">5</span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">5</span></span></span></span></span></span></span></span></span></span></span></h2>
+<p>权值线段树的模板。前驱后继用 <code>std::map</code> 维护即可，时空复杂度均为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mi>log</mi><mo>⁡</mo><mi>w</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n \log w)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="mclose">)</span></span></span></span>。</p>
+<h2 id="Subtask-4：n-le-10-5-w-le-10-9">Subtask 4：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≤</mo><msup><mn>10</mn><mn>5</mn></msup><mo separator="true">,</mo><mi>w</mi><mo>≤</mo><msup><mn>10</mn><mn>9</mn></msup></mrow><annotation encoding="application/x-tex">n \le 10^5, w \le 10^9</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7719em;vertical-align:-0.136em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.0085em;vertical-align:-0.1944em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">5</span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">9</span></span></span></span></span></span></span></span></span></span></span></h2>
+<p>把数字离散化后按 Subtask 3 的做法即可。</p>
+<h2 id="Subtask-5：n-le-10-5-w-le-10-9，强制在线">Subtask 5：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≤</mo><msup><mn>10</mn><mn>5</mn></msup><mo separator="true">,</mo><mi>w</mi><mo>≤</mo><msup><mn>10</mn><mn>9</mn></msup></mrow><annotation encoding="application/x-tex">n \le 10^5, w \le 10^9</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7719em;vertical-align:-0.136em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.0085em;vertical-align:-0.1944em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">5</span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">9</span></span></span></span></span></span></span></span></span></span></span>，强制在线</h2>
+<p>这种时候就需要请出平衡树了。</p>
+<h1>平衡树的目的</h1>
+<h2 id="引入-BST">引入 BST</h2>
+<p>首先，我们介绍一种数据结构，二叉搜索树（Binary Search Tree），简称 <strong>BST</strong>。</p>
+<p>让我们回顾二分查找的过程：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-type">int</span> l = <span class="hljs-number">1</span>, r = n;<br><span class="hljs-keyword">while</span> (l &lt;= r) &#123;<br>    <span class="hljs-type">int</span> mid = (l + r) &gt;&gt; <span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">if</span> (a[mid] == target) <span class="hljs-keyword">return</span> mid;<br>    <span class="hljs-keyword">if</span> (a[mid] &lt; target) l = mid + <span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">else</span> r = mid - <span class="hljs-number">1</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>如果我们维护 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">a</span></span></span></span> 数组有序，则查询复杂度为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>log</mi><mo>⁡</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(\log n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span>。</p>
+<p>但是，维护 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">a</span></span></span></span> 数组有序的代价是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span> 的，所以我们想到把这个查找过程上树。这样就出现了 BST 这种数据结构。</p>
+<p>BST 的定义如下：</p>
+<p>BST 是一棵二叉树，树中每个节点存储数值，数值不重；对于任意节点的孩子，其左孩子的值小于它的值，其右孩子的值大于它的值。</p>
+<p>例如，把 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo separator="true">,</mo><mn>2</mn><mo separator="true">,</mo><mn>3</mn><mo separator="true">,</mo><mn>4</mn><mo separator="true">,</mo><mn>5</mn><mo separator="true">,</mo><mn>6</mn></mrow><annotation encoding="application/x-tex">1, 2, 3, 4, 5, 6</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">3</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">4</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">5</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">6</span></span></span></span> 建出一棵 BST 可以是这样的：</p>
+<p><img src="https://cdn.luogu.com.cn/upload/image_hosting/nguctn8p.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p>现在来考虑其他操作：</p>
+<h3 id="插入操作">插入操作</h3>
+<p>BST 的结构十分适合二分。二分找到适合这个值的位置，新建节点即可。</p>
+<p>如果要维护可重集，需要在节点中增加 <code>cnt</code> 域，如果节点存在则将 <code>cnt</code> 加一。由于 OI 中大部分情况需要维护可重集，下文默认 <code>cnt</code> 域的存在。</p>
+<h3 id="各种遍历">各种遍历</h3>
+<p>由于 BST 是二叉树，对其进行前序、中序、后序遍历都是可行的。BST 常用的是中序遍历。</p>
+<blockquote>
+<p>BST 的性质：中序遍历一定有序。</p>
+</blockquote>
+<p>简证：设 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">p</span></span></span></span> 为根，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi><mo separator="true">,</mo><mi>r</mi></mrow><annotation encoding="application/x-tex">l, r</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span></span></span></span> 为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">p</span></span></span></span> 的左右孩子，则中序遍历为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi><mo separator="true">,</mo><mi>p</mi><mo separator="true">,</mo><mi>r</mi></mrow><annotation encoding="application/x-tex">l, p, r</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">p</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span></span></span></span>，由 BST 定义知 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi><mo>&lt;</mo><mi>p</mi><mo>&lt;</mo><mi>r</mi></mrow><annotation encoding="application/x-tex">l &lt; p &lt; r</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7335em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7335em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">p</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span></span></span></span>，得证。</p>
+<p>中序遍历参考实现如下，其余同理。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function">std::vector&lt;T&gt; <span class="hljs-title">inorder</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> </span>&#123;<br>    <span class="hljs-keyword">if</span> (!root) <span class="hljs-keyword">return</span> &#123;&#125;;<br>    std::vector&lt;T&gt; res; res.<span class="hljs-built_in">reserve</span>(<span class="hljs-built_in">size</span>());<br><br>    std::function&lt;<span class="hljs-type">void</span>(<span class="hljs-type">const</span> node*)&gt; dfs = [&amp;](<span class="hljs-type">const</span> node* x) -&gt; <span class="hljs-type">void</span> &#123;<br>        <span class="hljs-keyword">if</span> (!x) <span class="hljs-keyword">return</span>;<br>        <span class="hljs-built_in">dfs</span>(x-&gt;left);<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= x-&gt;cnt; i++) res.<span class="hljs-built_in">emplace_back</span>(x-&gt;val);<br>        <span class="hljs-built_in">dfs</span>(x-&gt;right);<br>    &#125;;<br>    <span class="hljs-built_in">dfs</span>(root);<br>    <span class="hljs-keyword">return</span> res;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>特别地，为方便调试，我实现了一个 <code>prettify</code> 函数。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function">std::string <span class="hljs-title">prettify</span><span class="hljs-params">(<span class="hljs-type">int</span> tabs = <span class="hljs-number">4</span>, <span class="hljs-type">char</span> fill = <span class="hljs-string">&#x27; &#x27;</span>)</span> <span class="hljs-type">const</span> </span>&#123;<br>    <span class="hljs-keyword">if</span> (!root) <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>;<br>    std::stringstream ss;<br>    ss &lt;&lt; root-&gt;val &lt;&lt; <span class="hljs-string">&#x27;(&#x27;</span> &lt;&lt; root-&gt;cnt &lt;&lt; <span class="hljs-string">&quot;)\n&quot;</span>;<br><br>    std::string fill1, fill2; <br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt; tabs; i++) fill<span class="hljs-number">1.</span><span class="hljs-built_in">push_back</span>(fill);<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= tabs; i++) fill<span class="hljs-number">2.</span><span class="hljs-built_in">push_back</span>(fill);<br><br>    std::function&lt;<span class="hljs-type">void</span>(<span class="hljs-type">const</span> node*, <span class="hljs-type">int</span>, std::vector&lt;<span class="hljs-type">int</span>&gt;)&gt; dfs = <br>        [&amp;](<span class="hljs-type">const</span> node* x, <span class="hljs-type">int</span> depth, std::vector&lt;<span class="hljs-type">int</span>&gt; sites) -&gt; <span class="hljs-type">void</span> &#123;<br>        <span class="hljs-type">int</span> void_num = <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">for</span> (node* child : &#123;x-&gt;left, x-&gt;right&#125;) &#123;<br>            <span class="hljs-keyword">if</span> (!child) <span class="hljs-keyword">continue</span>;<br>            <span class="hljs-type">int</span> n = depth - void_num - (<span class="hljs-type">int</span>) sites.<span class="hljs-built_in">size</span>();<br>            std::vector&lt;std::string&gt; str_list;<br>            str_list.<span class="hljs-built_in">reserve</span>(n &lt;&lt; <span class="hljs-number">1</span>);<br>            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) str_list.<span class="hljs-built_in">push_back</span>(<span class="hljs-string">&quot;│&quot;</span> + fill1);<br>            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> site : sites) &#123;<br>                str_list.<span class="hljs-built_in">insert</span>(str_list.<span class="hljs-built_in">begin</span>() + site, fill2);<br>            &#125;<br>            <span class="hljs-keyword">if</span> (x-&gt;right &amp;&amp; child != x-&gt;right) &#123;<br>                str_list.<span class="hljs-built_in">emplace_back</span>(<span class="hljs-string">&quot;\u251c\u2500\u2500 &quot;</span>);<br>            &#125; <span class="hljs-keyword">else</span> &#123;<br>                str_list.<span class="hljs-built_in">emplace_back</span>(<span class="hljs-string">&quot;\u2514\u2500\u2500 &quot;</span>);<br>                void_num++, sites.<span class="hljs-built_in">push_back</span>(depth);<br>            &#125;<br><br>            std::string out;<br>            <span class="hljs-keyword">for</span> (<span class="hljs-type">const</span> std::string&amp; s : str_list) out += s;<br>            ss &lt;&lt; out &lt;&lt; child-&gt;val &lt;&lt; <span class="hljs-string">&#x27;(&#x27;</span> &lt;&lt; child-&gt;cnt &lt;&lt; <span class="hljs-string">&quot;)\n&quot;</span>;<br><br>            <span class="hljs-built_in">dfs</span>(child, depth + <span class="hljs-number">1</span>, sites);<br>            <span class="hljs-keyword">if</span> (child == x-&gt;right) void_num--, sites.<span class="hljs-built_in">pop_back</span>();<br>        &#125;<br>    &#125;;<br>    <span class="hljs-built_in">dfs</span>(root, <span class="hljs-number">0</span>, &#123;&#125;);<br>    <span class="hljs-keyword">return</span> ss.<span class="hljs-built_in">str</span>();<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>它的显示大概长这样：</p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs dns"><span class="hljs-number">415495(0</span>)<br>├── <span class="hljs-number">265337(1</span>)<br>│   ├── <span class="hljs-number">208361(1</span>)<br>│   │   ├── <span class="hljs-number">107323(1</span>)<br>│   │   │   ├── <span class="hljs-number">60423(1</span>)<br>│   │   │   └── <span class="hljs-number">127077(1</span>)<br>│   │   └── <span class="hljs-number">260553(1</span>)<br>│   └── <span class="hljs-number">376755(1</span>)<br>│       ├── <span class="hljs-number">299181(1</span>)<br>│       └── <span class="hljs-number">413857(1</span>)<br>└── <span class="hljs-number">543050(1</span>)<br>    ├── <span class="hljs-number">460416(1</span>)<br>    │   ├── <span class="hljs-number">430219(1</span>)<br>    │   └── <span class="hljs-number">510033(1</span>)<br>    └── <span class="hljs-number">691707(1</span>)<br>        ├── <span class="hljs-number">632641(1</span>)<br>        │   ├── <span class="hljs-number">599175(1</span>)<br>        │   │   └── <span class="hljs-number">602133(1</span>)<br>        │   └── <span class="hljs-number">676499(1</span>)<br>        └── <span class="hljs-number">838037(1</span>)<br>            ├── <span class="hljs-number">705510(1</span>)<br>            └── <span class="hljs-number">926433(1</span>)<br>                └── <span class="hljs-number">957395(1</span>)<br></code></pre></td></tr></table></figure>
+<h3 id="查询操作">查询操作</h3>
+<p>与插入类似，用一种类似二分的方法找到节点即可。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function">node* <span class="hljs-title">find</span><span class="hljs-params">(<span class="hljs-type">const</span> T&amp; val)</span> <span class="hljs-type">const</span> </span>&#123;<br>    node* cur = root;<br>    <span class="hljs-keyword">while</span> (cur &amp;&amp; val != cur-&gt;val) &#123;<br>        cur = <span class="hljs-built_in">cmp</span>(val, cur-&gt;val) ? cur-&gt;left : cur-&gt;right;<br>    &#125;<br>    <span class="hljs-keyword">return</span> cur;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="查询最值操作">查询最值操作</h3>
+<p>根据 BST 中序遍历的性质，最小值是中序遍历的第一个数，最大值是中序遍历的最后一个数。</p>
+<p>中序遍历的方法是左、中、右，所以最小值由根节点开始走左链，最大值由根节点开始走右链即可。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">static</span> node* <span class="hljs-title">get_min</span><span class="hljs-params">(node* cur)</span> </span>&#123;<br>    node *x = cur;<br>    <span class="hljs-keyword">while</span> (x &amp;&amp; x-&gt;left) x = x-&gt;left;<br>    <span class="hljs-keyword">return</span> x;<br>&#125;<br><span class="hljs-function"><span class="hljs-type">static</span> node* <span class="hljs-title">get_max</span><span class="hljs-params">(node* cur)</span> </span>&#123;<br>    node *x = cur;<br>    <span class="hljs-keyword">while</span> (x &amp;&amp; x-&gt;right) x = x-&gt;right;<br>    <span class="hljs-keyword">return</span> x;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="前驱后继操作">前驱后继操作</h3>
+<p>先讲这个是为了理解删除。</p>
+<p>一个数的前驱定义为 BST 中比他小的数的最大值。同理，一个数的后驱定义为 BST 中比他大的数的最小值。这个数不一定在 BST 中。有点类似 <code>lower_bound</code> 和 <code>upper_bound</code>。</p>
+<p>以下只说前驱的实现，后继同理。</p>
+<p>我们从根节点开始遍历，如果当前数比查询数小，则更新答案，并在右子树搜索；否则在左子树搜索。</p>
+<p>思考这样为什么是对的：</p>
+<ol>
+<li>答案小于查询数。由于我们在当前数比查询数小时更新答案，因此除非不存在任何一个比它小的数，否则答案一定小于查询数。</li>
+<li>答案是小于查询数的最小值。在当前数比查询数小时往更大的右子树搜索可以保证这一点。</li>
+</ol>
+<p>参考实现如下。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function">T <span class="hljs-title">lower_bound</span><span class="hljs-params">(<span class="hljs-type">const</span> T&amp; val)</span> <span class="hljs-type">const</span> </span>&#123;<br>    node *cur = root;<br>    T res = <span class="hljs-built_in">T</span>();<br>    <span class="hljs-keyword">while</span> (cur) &#123;<br>        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">cmp</span>(cur-&gt;val, val)) res = cur-&gt;val, cur = cur-&gt;right;<br>        <span class="hljs-keyword">else</span> cur = cur-&gt;left;<br>    &#125;<br>    <span class="hljs-keyword">return</span> res;<br>&#125;<br><span class="hljs-function">T <span class="hljs-title">upper_bound</span><span class="hljs-params">(<span class="hljs-type">const</span> T&amp; val)</span> <span class="hljs-type">const</span> </span>&#123;<br>    node *cur = root;<br>    T res = <span class="hljs-built_in">T</span>();<br>    <span class="hljs-keyword">while</span> (cur) &#123;<br>        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">cmp</span>(val, cur-&gt;val)) res = cur-&gt;val, cur = cur-&gt;left;<br>        <span class="hljs-keyword">else</span> cur = cur-&gt;right;<br>    &#125;<br>    <span class="hljs-keyword">return</span> res;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="删除操作">删除操作</h3>
+<p>BST 的删除比较复杂。 <s>甚至比很多平衡树复杂。</s></p>
+<p>先找到这个节点。设节点为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">p</span></span></span></span>，分类讨论：</p>
+<ol>
+<li>
+<p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">p</span></span></span></span> 的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mi>n</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">cnt</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6151em;"></span><span class="mord mathnormal">c</span><span class="mord mathnormal">n</span><span class="mord mathnormal">t</span></span></span></span> 大于 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span>，把 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mi>n</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">cnt</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6151em;"></span><span class="mord mathnormal">c</span><span class="mord mathnormal">n</span><span class="mord mathnormal">t</span></span></span></span> 减一即可。</p>
+</li>
+<li>
+<p>若 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">p</span></span></span></span> 为叶子节点，直接删除。</p>
+</li>
+<li>
+<p>若 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">p</span></span></span></span> 只有一个孩子，将这个孩子上提即可，不影响 BST 的结构。（可以根据 BST 的中序遍历思考为什么）</p>
+</li>
+<li>
+<p>若 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">p</span></span></span></span> 有两个孩子，将右子树的最小值上提替代它。（类似于后继，但只看两个孩子而不看父亲）</p>
+</li>
+</ol>
+<p>对于情况 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>4</mn></mrow><annotation encoding="application/x-tex">4</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">4</span></span></span></span>，注意替换节点后删除右子树的最小值。</p>
+<p>参考实现：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">remove_node</span><span class="hljs-params">(node*&amp; cur)</span> </span>&#123;<br>    <span class="hljs-keyword">if</span> (!cur) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    <span class="hljs-keyword">if</span> (cur-&gt;cnt &gt; <span class="hljs-number">1</span>) &#123;<br>        cur-&gt;cnt--, cur-&gt;<span class="hljs-built_in">pushup</span>();<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>    &#125;<br>    <span class="hljs-keyword">if</span> (cur-&gt;left &amp;&amp; cur-&gt;right) &#123;<br>        node* replace = <span class="hljs-keyword">this</span>-&gt;<span class="hljs-built_in">get_min</span>(cur-&gt;right);<br>        cur-&gt;cnt = replace-&gt;cnt, cur-&gt;val = replace-&gt;val;<br>        replace-&gt;cnt = <span class="hljs-number">1</span>;<br>        <span class="hljs-built_in">remove</span>(cur-&gt;right, replace-&gt;val);<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        cur = cur-&gt;left ? cur-&gt;left : cur-&gt;right;<br>    &#125;<br>    <span class="hljs-keyword">if</span> (cur) cur-&gt;<span class="hljs-built_in">pushup</span>();<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>&#125;<br><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">remove</span><span class="hljs-params">(node*&amp; cur, <span class="hljs-type">const</span> T&amp; val)</span> </span>&#123;<br>    <span class="hljs-keyword">if</span> (!cur) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    <span class="hljs-keyword">if</span> (val == cur-&gt;val) <span class="hljs-keyword">return</span> <span class="hljs-built_in">remove_node</span>(cur);<br>    <span class="hljs-type">bool</span> res;<br>    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">cmp</span>(val, cur-&gt;val)) res = <span class="hljs-built_in">remove</span>(cur-&gt;left, val);<br>    <span class="hljs-keyword">else</span> res = <span class="hljs-built_in">remove</span>(cur-&gt;right, val);<br>    <span class="hljs-keyword">if</span> (cur) cur-&gt;<span class="hljs-built_in">pushup</span>();<br>    <span class="hljs-keyword">return</span> res;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="排名相关">排名相关</h3>
+<p>如果只有上面的操作，为什么不用 <code>std::multiset</code> 呢？这就要说到平衡树的重要操作——排名查询了。</p>
+<p>平衡树模板题中将排名定义为比查询数小的数的个数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">+1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">+</span><span class="mord">1</span></span></span></span>。也可以说一个数的排名是它的中序遍历中的位置。下面的参考实现中，排名从 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn></mrow><annotation encoding="application/x-tex">0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span> 开始。（即：排名定义为比查询数小的数的个数。）</p>
+<p>如何实现排名操作？考虑权值线段树的做法。在每个节点维护一个 <code>size</code>，即这个子树中数的个数。这就需要维护 <code>size</code> 了。也许你看到上面的代码中有 <code>pushup</code> 操作，这就是维护 <code>size</code> 的操作。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function">BinarySearchTreeNode&lt;T&gt;* <span class="hljs-title">pushup</span><span class="hljs-params">()</span> </span>&#123;<br>    size = cnt + (left ? left-&gt;size : <span class="hljs-number">0</span>) + (right ? right-&gt;size : <span class="hljs-number">0</span>);<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="根据数查询排名">根据数查询排名</h4>
+<p>从根节点搜到这个数，记录路径。</p>
+<p>令 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi></mrow><annotation encoding="application/x-tex">s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">s</span></span></span></span> 为当前节点左子树的大小，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi></mrow><annotation encoding="application/x-tex">c</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">c</span></span></span></span> 为当前节点的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mi>n</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">cnt</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6151em;"></span><span class="mord mathnormal">c</span><span class="mord mathnormal">n</span><span class="mord mathnormal">t</span></span></span></span>。</p>
+<p>若在路径中向右搜了，则答案加上 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mo>+</mo><mi>c</mi></mrow><annotation encoding="application/x-tex">s+c</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">s</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">c</span></span></span></span>。最终的答案还要加上 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">s + 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">s</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span>。</p>
+<p>这很适合递归。参考实现：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">rank</span><span class="hljs-params">(node* cur, <span class="hljs-type">const</span> T&amp; val)</span> <span class="hljs-type">const</span> </span>&#123;<br>    <span class="hljs-keyword">if</span> (!cur) <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>    <span class="hljs-type">int</span> left_size = cur-&gt;left ? cur-&gt;left-&gt;size : <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">if</span> (val == cur-&gt;val) <span class="hljs-keyword">return</span> left_size + <span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">cmp</span>(val, cur-&gt;val)) <span class="hljs-keyword">return</span> <span class="hljs-built_in">rank</span>(cur-&gt;left, val);<br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">rank</span>(cur-&gt;right, val) + left_size + cur-&gt;cnt;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="根据排名查询数">根据排名查询数</h4>
+<p>上述操作逆过来即可。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function">T <span class="hljs-title">kth</span><span class="hljs-params">(node* cur, <span class="hljs-type">int</span> k)</span> <span class="hljs-type">const</span> </span>&#123;<br>    <span class="hljs-keyword">if</span> (!cur) <span class="hljs-keyword">return</span> <span class="hljs-built_in">T</span>();<br>    <span class="hljs-type">int</span> left_size = cur-&gt;left ? cur-&gt;left-&gt;size : <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">if</span> (left_size &gt;= k) <span class="hljs-keyword">return</span> <span class="hljs-built_in">kth</span>(cur-&gt;left, k);<br>    <span class="hljs-keyword">if</span> (left_size &lt; k - cur-&gt;cnt) <span class="hljs-keyword">return</span> <span class="hljs-built_in">kth</span>(cur-&gt;right, k - left_size - cur-&gt;cnt);<br>    <span class="hljs-keyword">return</span> cur-&gt;val;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="建树">建树</h3>
+<p>简单说一下，在替罪羊的重构有用。实际上很少这么做。</p>
+<p>令序列为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">a</span></span></span></span>。如果序列有序，考虑分治。</p>
+<p>如果当前处理的区间为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mi>l</mi><mo separator="true">,</mo><mi>r</mi><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[l,r]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mclose">]</span></span></span></span>，设 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mi>i</mi><mi>d</mi><mo>=</mo><mo stretchy="false">⌊</mo><mstyle displaystyle="true" scriptlevel="0"><mfrac><mrow><mi>l</mi><mo>+</mo><mi>r</mi></mrow><mn>2</mn></mfrac></mstyle><mo stretchy="false">⌋</mo></mrow><annotation encoding="application/x-tex">mid=\lfloor \dfrac{l+r}{2} \rfloor</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">mi</span><span class="mord mathnormal">d</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.0574em;vertical-align:-0.686em;"></span><span class="mopen">⌊</span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3714em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose">⌋</span></span></span></span>，以 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mrow><mi>m</mi><mi>i</mi><mi>d</mi></mrow></msub></mrow><annotation encoding="application/x-tex">a_{mid}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">mi</span><span class="mord mathnormal mtight">d</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 为根，左右孩子分别为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mi>l</mi><mo separator="true">,</mo><mi>m</mi><mi>i</mi><mi>d</mi><mo>−</mo><mn>1</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[l,mid-1]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">mi</span><span class="mord mathnormal">d</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">]</span></span></span></span> 到 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mi>m</mi><mi>i</mi><mi>d</mi><mo>+</mo><mn>1</mn><mo separator="true">,</mo><mi>r</mi><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[mid+1,r]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord mathnormal">mi</span><span class="mord mathnormal">d</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mclose">]</span></span></span></span>。</p>
+<p>建树是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span> 的。但是由于排序也有 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mi>log</mi><mo>⁡</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n \log n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span>，因此实现中直接调用插入函数，复杂度也是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mi>log</mi><mo>⁡</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n \log n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span>，常数稍大。</p>
+<h3 id="完整实现">完整实现</h3>
+<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/paste/octpkjd3">BST 完整实现</a></p>
+<h2 id="应用">应用</h2>
+<p>平衡树最大的应用是维护有序集合。或者说，我们给 <code>std::multiset</code> 添加了 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>log</mi><mo>⁡</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(\log n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span> 的排名操作。</p>
+<p>除此之外，由于 <code>splay</code> 和 <code>fhq-treap</code> 的一些特性，平衡树可以用来支持区间操作。<code>splay</code> 是 <code>LCT</code> 的基础。</p>
+<h2 id="优化">优化</h2>
+<p>你遇到了数据随机的平衡树模板。你敲了 BST 上去，A 掉了这道水题。</p>
+<p>你遇到了加强版。听取 TLE 声一片。</p>
+<p>注意到，BST 在最坏情况下会退化为一个有序链表。例如，执行下面的操作：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-built_in">insert</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>);<br></code></pre></td></tr></table></figure>
+<p>BST 的形态如下：</p>
+<p><img src="https://cdn.luogu.com.cn/upload/image_hosting/a7l2oiu5.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p>如果维护有序链表，复杂度和暴力相同，是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span> 的。</p>
+<p>可以证明，在随机数据下，BST 的期望树高是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>log</mi><mo>⁡</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(\log n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span> 的。一般情况下，我们用 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>h</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(h)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">h</span><span class="mclose">)</span></span></span></span> 表示 BST 的复杂度，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi></mrow><annotation encoding="application/x-tex">h</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">h</span></span></span></span> 是树高。为了防止 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi></mrow><annotation encoding="application/x-tex">h</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">h</span></span></span></span> 退化到 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span>，就需要引出平衡树了。</p>
+<h1>AVL</h1>
+<p>根据上面的思路，可以引出 AVL。</p>
+<p>AVL 的每个节点维护一个 <code>high</code> 域，表示子树的高度。AVL 需要维护 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∣</mi><mi>h</mi><mi>i</mi><mi>g</mi><msub><mi>h</mi><mi>l</mi></msub><mo>−</mo><mi>h</mi><mi>i</mi><mi>g</mi><msub><mi>h</mi><mi>r</mi></msub><mi mathvariant="normal">∣</mi><mo>≤</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">|high_l-high_r|\le 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∣</span><span class="mord mathnormal">hi</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord"><span class="mord mathnormal">h</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">hi</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord"><span class="mord mathnormal">h</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">r</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">∣</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span>。</p>
+<h2 id="左旋右旋的引入">左旋右旋的引入</h2>
+<p>注意到，对一棵 BST 结构进行调整是不影响树的合法性的。举个例子：</p>
+<p><img src="https://cdn.luogu.com.cn/upload/image_hosting/b5m91b3l.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p>这棵 BST 可以调整为：</p>
+<p><img src="https://cdn.luogu.com.cn/upload/image_hosting/y4eugduh.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p>这就是平衡树的左旋操作。类似地，把上述调整的逆过程称作右旋。</p>
+<p>参考代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">static</span> node* <span class="hljs-title">left_rotate</span><span class="hljs-params">(node* p)</span> </span>&#123;<br>    node *q = p-&gt;left;<br>    p-&gt;left = q-&gt;right, q-&gt;right = p, p-&gt;<span class="hljs-built_in">pushup</span>();<br>    <span class="hljs-keyword">return</span> q-&gt;<span class="hljs-built_in">pushup</span>();<br>&#125;<br><span class="hljs-function"><span class="hljs-type">static</span> node* <span class="hljs-title">right_rotate</span><span class="hljs-params">(node* p)</span> </span>&#123;<br>    node *q = p-&gt;right;<br>    p-&gt;right = q-&gt;left, q-&gt;left = p, p-&gt;<span class="hljs-built_in">pushup</span>();<br>    <span class="hljs-keyword">return</span> q-&gt;<span class="hljs-built_in">pushup</span>();<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="如何维护平衡">如何维护平衡</h2>
+<p>分类讨论破坏平衡的情况：</p>
+<ol>
+<li>
+<p>LL 型（左孩子的左孩子过深），如图：</p>
+<p><img src="https://cdn.luogu.com.cn/upload/image_hosting/a8gw13qt.png" srcset="/img/loading.gif" lazyload alt=""></p>
+</li>
+</ol>
+<p>解法：右旋节点 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi></mrow><annotation encoding="application/x-tex">T</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span></span></span></span>。</p>
+<ol start="2">
+<li>
+<p>RR 型（右孩子的右孩子过深），解法：类似 LL 型，左旋节点 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi></mrow><annotation encoding="application/x-tex">T</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span></span></span></span>。</p>
+</li>
+<li>
+<p>LR 型（左孩子的右孩子过深），如图：</p>
+<p><img src="https://cdn.luogu.com.cn/upload/image_hosting/ls4ionx1.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p>解法：左旋节点 L，成为 LL 型，后右旋节点 T，即左右双旋。</p>
+</li>
+<li>
+<p>RL 型（右孩子的左孩子过深），解法：类似 LR 型，右旋节点 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi></mrow><annotation encoding="application/x-tex">R</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span></span></span></span> 后左旋节点 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi></mrow><annotation encoding="application/x-tex">T</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span></span></span></span>，即右左双旋。</p>
+</li>
+</ol>
+<p>双旋的参考实现：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">static</span> node* <span class="hljs-title">left_right_rotate</span><span class="hljs-params">(node* p)</span> </span>&#123;<br>    p-&gt;left = <span class="hljs-built_in">right_rotate</span>(p-&gt;left);<br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">left_rotate</span>(p);<br>&#125;<br><span class="hljs-function"><span class="hljs-type">static</span> node* <span class="hljs-title">right_left_rotate</span><span class="hljs-params">(node* p)</span> </span>&#123;<br>    p-&gt;right = <span class="hljs-built_in">left_rotate</span>(p-&gt;right);<br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">right_rotate</span>(p);<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="代码修改">代码修改</h2>
+<p>首先，加入一个 <code>get_high</code> 函数防止空指针。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">long</span> <span class="hljs-title">get_high</span><span class="hljs-params">(node* p)</span> </span>&#123;<span class="hljs-keyword">return</span> p ? p-&gt;high : <span class="hljs-number">0</span>;&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="修改-insert-操作">修改 <code>insert</code> 操作</h3>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">if</span> (<span class="hljs-built_in">cmp</span>(val, cur-&gt;val)) &#123;<br>    <span class="hljs-built_in">insert</span>(cur-&gt;left, val), cur-&gt;<span class="hljs-built_in">pushup</span>();<br>    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">get_high</span>(cur-&gt;left) - <span class="hljs-built_in">get_high</span>(cur-&gt;right) &gt;= <span class="hljs-number">2</span>) &#123;<br>        cur = <span class="hljs-built_in">cmp</span>(val, cur-&gt;left-&gt;val) ? <br>            <span class="hljs-built_in">left_rotate</span>(cur) : <span class="hljs-built_in">left_right_rotate</span>(cur);<br>    &#125;<br>&#125; <span class="hljs-keyword">else</span> &#123;<br>    <span class="hljs-built_in">insert</span>(cur-&gt;right, val), cur-&gt;<span class="hljs-built_in">pushup</span>();<br>    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">get_high</span>(cur-&gt;right) - <span class="hljs-built_in">get_high</span>(cur-&gt;left) &gt;= <span class="hljs-number">2</span>) &#123;<br>        cur = <span class="hljs-built_in">cmp</span>(val, cur-&gt;right-&gt;val) ? <br>            <span class="hljs-built_in">right_left_rotate</span>(cur) : <span class="hljs-built_in">right_rotate</span>(cur);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>改动搜索部分，调整平衡。</p>
+<h3 id="修改-remove-操作">修改 <code>remove</code> 操作</h3>
+<p><code>remove</code> 相对难改一点。为了方便，我把代码全部展示出来，添加的代码用注释标注。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">remove_node</span><span class="hljs-params">(node*&amp; cur)</span> </span>&#123;<br>    <span class="hljs-keyword">if</span> (!cur) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    <span class="hljs-keyword">if</span> (cur-&gt;cnt &gt; <span class="hljs-number">1</span>) &#123;<br>        cur-&gt;cnt--, cur-&gt;<span class="hljs-built_in">pushup</span>();<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>    &#125;<br>    <span class="hljs-keyword">if</span> (cur-&gt;left &amp;&amp; cur-&gt;right) &#123;<br>        node* replace = <span class="hljs-keyword">this</span>-&gt;<span class="hljs-built_in">get_min</span>(cur-&gt;right);<br>        cur-&gt;cnt = replace-&gt;cnt, cur-&gt;val = replace-&gt;val;<br>        replace-&gt;cnt = <span class="hljs-number">1</span>;<br>        <span class="hljs-built_in">remove</span>(cur-&gt;right, replace-&gt;val), cur-&gt;<span class="hljs-built_in">pushup</span>();<br>        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">get_high</span>(cur-&gt;left) - <span class="hljs-built_in">get_high</span>(cur-&gt;right) &gt;= <span class="hljs-number">2</span>) &#123; <span class="hljs-comment">// Added</span><br>            cur = (<span class="hljs-built_in">get_high</span>(cur-&gt;left-&gt;left) &gt;= <span class="hljs-built_in">get_high</span>(cur-&gt;left-&gt;right)) ? <span class="hljs-comment">// Added</span><br>                <span class="hljs-built_in">left_rotate</span>(cur) : <span class="hljs-built_in">left_right_rotate</span>(cur); <span class="hljs-comment">// Added</span><br>        &#125; <span class="hljs-comment">// Added</span><br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        cur = cur-&gt;left ? cur-&gt;left : cur-&gt;right;<br>    &#125;<br>    <span class="hljs-keyword">if</span> (cur) cur-&gt;<span class="hljs-built_in">pushup</span>();<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>&#125;<br><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">remove</span><span class="hljs-params">(node*&amp; cur, <span class="hljs-type">const</span> T&amp; val)</span> </span>&#123;<br>    <span class="hljs-keyword">if</span> (!cur) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    <span class="hljs-keyword">if</span> (val == cur-&gt;val) <span class="hljs-keyword">return</span> <span class="hljs-built_in">remove_node</span>(cur);<br>    <span class="hljs-type">bool</span> res;<br>    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">cmp</span>(val, cur-&gt;val)) &#123;<br>        res = <span class="hljs-built_in">remove</span>(cur-&gt;left, val), cur-&gt;<span class="hljs-built_in">pushup</span>();<br>        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">get_high</span>(cur-&gt;right) - <span class="hljs-built_in">get_high</span>(cur-&gt;left) &gt;= <span class="hljs-number">2</span>) &#123; <span class="hljs-comment">// Added</span><br>            cur = <span class="hljs-built_in">get_high</span>(cur-&gt;right-&gt;right) &gt;= <span class="hljs-built_in">get_high</span>(cur-&gt;right-&gt;left) ? <span class="hljs-comment">// Added</span><br>                <span class="hljs-built_in">right_rotate</span>(cur) : <span class="hljs-built_in">right_left_rotate</span>(cur); <span class="hljs-comment">// Added</span><br>        &#125; <span class="hljs-comment">// Added</span><br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        res = <span class="hljs-built_in">remove</span>(cur-&gt;right, val), cur-&gt;<span class="hljs-built_in">pushup</span>();<br>        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">get_high</span>(cur-&gt;left) - <span class="hljs-built_in">get_high</span>(cur-&gt;right) &gt;= <span class="hljs-number">2</span>) &#123; <span class="hljs-comment">// Added</span><br>            cur = <span class="hljs-built_in">get_high</span>(cur-&gt;left-&gt;left) &gt;= <span class="hljs-built_in">get_high</span>(cur-&gt;left-&gt;right) ? <span class="hljs-comment">// Added</span><br>                <span class="hljs-built_in">left_rotate</span>(cur) : <span class="hljs-built_in">left_right_rotate</span>(cur); <span class="hljs-comment">// Added</span><br>        &#125; <span class="hljs-comment">// Added</span><br>    &#125;<br>    <span class="hljs-keyword">if</span> (cur) cur-&gt;<span class="hljs-built_in">pushup</span>();<br>    <span class="hljs-keyword">return</span> res;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>其他操作和 BST 毫无区别。</p>
+<h2 id="完整实现-2">完整实现</h2>
+<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/paste/s553l03d">AVL 完整实现</a></p>
+<h2 id="闲谈">闲谈</h2>
+<p>AVL 的常数比较大。但是，对于 OI 中常用的平衡树（Splay 和 Treap），它的性能还是比较好的。</p>
+<p>其实我个人比较喜欢 AVL。AVL 只要把 BST 写出来了基本上就不会写挂，码量比起 BST 也就增加了五十行。而且 AVL 的节点调整有种解魔方的感觉，记住了基本挂不了。</p>
+<p>AVL 的最大优势是查询。AVL 只在修改时作旋转，所以 AVL 的查询跑得飞快。</p>
+<h1>Treap</h1>
+<h2 id="定义">定义</h2>
+<p>Treap 是 BST 与堆的结合。具体来说，Treap 是堆关键字随机的笛卡尔树。</p>
+<p>Treap 的节点额外定义了 <code>prio</code> 域，初始化为随机值。Treap 的每个节点除了满足 BST 的定义外，还要保证父节点的 <code>prio</code> 小于孩子的 <code>prio</code>。即：<code>val</code> 上维护 BST 性质，<code>prio</code> 上维护小根堆性质。</p>
+<p>可以证明，这样做的复杂度是期望 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>log</mi><mo>⁡</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(\log n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span> 的。</p>
+<h2 id="性质维护">性质维护</h2>
+<p>如何维护 <code>prio</code> 的性质？</p>
+<p>把 AVL 的左旋右旋抄过来：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">static</span> node* <span class="hljs-title">left_rotate</span><span class="hljs-params">(node* p)</span> </span>&#123;<br>    node* q = p-&gt;right;<br>    p-&gt;right = q-&gt;left, q-&gt;left = p, p = q;<br>    p-&gt;left-&gt;<span class="hljs-built_in">pushup</span>();<br>    <span class="hljs-keyword">return</span> p-&gt;<span class="hljs-built_in">pushup</span>();<br>&#125;<br><span class="hljs-function"><span class="hljs-type">static</span> node* <span class="hljs-title">right_rotate</span><span class="hljs-params">(node* p)</span> </span>&#123;<br>    node* q = p-&gt;left;<br>    p-&gt;left = q-&gt;right, q-&gt;right = p, p = q;<br>    p-&gt;right-&gt;<span class="hljs-built_in">pushup</span>();<br>    <span class="hljs-keyword">return</span> p-&gt;<span class="hljs-built_in">pushup</span>();<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>填加一个 <code>get_prio</code> 函数防止空指针：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">long</span> <span class="hljs-title">get_prio</span><span class="hljs-params">(node* cur)</span> </span>&#123;<span class="hljs-keyword">return</span> cur ? cur-&gt;prio : <span class="hljs-number">0</span>;&#125;<br></code></pre></td></tr></table></figure>
+<p>其实，Treap 的核心维护就是这两种逻辑：</p>
+<ol>
+<li>当左子树的 <code>prio</code> 小于当前节点的，进行右旋；</li>
+<li>当右子树的 <code>prio</code> 小于当前节点的，进行左旋。</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">if</span> (<span class="hljs-built_in">get_prio</span>(cur-&gt;left) &lt; <span class="hljs-built_in">get_prio</span>(cur)) cur = <span class="hljs-built_in">right_rotate</span>(cur);<br><span class="hljs-keyword">if</span> (<span class="hljs-built_in">get_prio</span>(cur-&gt;right) &lt; <span class="hljs-built_in">get_prio</span>(cur)) cur = <span class="hljs-built_in">left_rotate</span>(cur);<br></code></pre></td></tr></table></figure>
+<p>修改 <code>insert</code> 函数如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">insert</span><span class="hljs-params">(node*&amp; cur, <span class="hljs-type">const</span> T&amp; val)</span> </span>&#123;<br>    ...<br>    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">cmp</span>(val, cur-&gt;val)) &#123;<br>        <span class="hljs-built_in">insert</span>(cur-&gt;left, val), cur-&gt;<span class="hljs-built_in">pushup</span>();<br>        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">get_prio</span>(cur-&gt;left) &lt; <span class="hljs-built_in">get_prio</span>(cur)) cur = <span class="hljs-built_in">right_rotate</span>(cur);<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-built_in">insert</span>(cur-&gt;right, val);<br>        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">get_prio</span>(cur-&gt;right) &lt; <span class="hljs-built_in">get_prio</span>(cur)) cur = <span class="hljs-built_in">left_rotate</span>(cur);<br>    &#125;<br>    cur-&gt;<span class="hljs-built_in">pushup</span>();<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>对于删除操作，除了 BST 的分类讨论，还要根据 <code>prio</code> 让 <code>prio</code> 小的当父节点。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">remove_node</span><span class="hljs-params">(node*&amp; cur)</span> </span>&#123;<br>    <span class="hljs-keyword">if</span> (!cur) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    <span class="hljs-keyword">if</span> (cur-&gt;cnt &gt; <span class="hljs-number">1</span>) &#123;<br>        cur-&gt;cnt--, cur-&gt;<span class="hljs-built_in">pushup</span>();<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>    &#125;<br>    <span class="hljs-keyword">if</span> (cur-&gt;left || cur-&gt;right) &#123;<br>        T val = cur-&gt;val;<br>        <span class="hljs-keyword">if</span> (!cur-&gt;right || <span class="hljs-built_in">get_prio</span>(cur-&gt;left) &gt; <span class="hljs-built_in">get_prio</span>(cur-&gt;right)) &#123;<br>            cur = <span class="hljs-built_in">right_rotate</span>(cur);<br>            <span class="hljs-built_in">remove</span>(cur-&gt;right, val);<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            cur = <span class="hljs-built_in">left_rotate</span>(cur);<br>            <span class="hljs-built_in">remove</span>(cur-&gt;left, val);<br>        &#125;<br>        <span class="hljs-keyword">return</span> cur-&gt;<span class="hljs-built_in">pushup</span>(), <span class="hljs-literal">true</span>;<br>    &#125; <br>    <span class="hljs-keyword">return</span> cur = <span class="hljs-literal">nullptr</span>, <span class="hljs-literal">true</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>这个删除甚至比 BST 简单。</p>
+<h2 id="完整实现-3">完整实现</h2>
+<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/paste/8n0a665t">Treap 实现</a></p>
+<h2 id="闲谈-2">闲谈</h2>
+<p>有旋 Treap 好像工程应用不多，但在 OI 中是应用最多的平衡树之一。实现了 BST 可以很方便地实现 Treap，而且 Treap 常数小，值得学习。</p>
+<p>Treap 的另一个优点是它可持久化，可单调栈 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span> 建树等。总之，Treap 是好写、好用的平衡树。</p>
+<h1>FHQ-Treap</h1>
+<p>FHQ-Treap 又称无旋 Treap，是 OI 界平衡树的主力。</p>
+<h2 id="优缺点">优缺点</h2>
+<p>在 FHQ-Treap 前，先了解一下优缺点：</p>
+<p>优点：</p>
+<ol>
+<li>码量非常少（甚至少写点功能能比 BST 还少）</li>
+<li>不容易写挂</li>
+<li>支持区间操作</li>
+<li>支持可持久化</li>
+<li>天然支持分裂、合并</li>
+<li>支持线性建树</li>
+</ol>
+<p>缺点：</p>
+<ol>
+<li>常数大（常用平衡树里最慢的）</li>
+<li>维护 LCT 不如 Splay 优秀（多了一个 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>log</mi><mo>⁡</mo></mrow><annotation encoding="application/x-tex">\log</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span></span></span></span>）</li>
+</ol>
+<p>总的来说，FHQ-Treap 还是值得学习的。</p>
+<h2 id="性质维护-2">性质维护</h2>
+<p>如它的名字，FHQ-Treap 满足 Treap 的性质。但是，FHQ-Treap 采用不同的性质维护方法——分裂和合并。这就是它为什么可以维护区间操作。</p>
+<h3 id="分裂">分裂</h3>
+<p>其实 BST 这种数据结构天然支持分裂。我们实现两个函数，<code>lower_split</code> 表示把小于查询值和大于等于查询值的树分裂，<code>upper_split</code> 表示把小于等于查询值和大于查询值的树分裂。</p>
+<blockquote>
+<p>注：市面上常见的 FHQ-Treap 写法是用 <code>lower_split(x - 1)</code> 替代 <code>upper_split(x)</code>。这样可以减少码量，但我本人喜欢这么写。</p>
+</blockquote>
+<p>考虑如何实现 <code>lower_split</code>，令 <code>lower_split</code> 返回分裂后的两棵树。根据查询值搜索：</p>
+<ol>
+<li>当前值大于等于查询值。此时，当前节点的右子树的全部值大于查询值，归入第二棵树，对左子树进行分裂即可。</li>
+<li>当前值小于查询值。此时，当前节点的左子树的全部值小于查询值，归入第一棵树，对右子树进行分裂即可。</li>
+</ol>
+<p><code>upper_split</code> 将分类讨论中的大于等于改为大于，小于改为小于等于即可。</p>
+<p>在常用实现中，由于 C++14 不支持解包，用引用返回两棵树比较方便。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">lower_split</span><span class="hljs-params">(node* cur, <span class="hljs-type">const</span> T&amp; val, node*&amp; x, node*&amp; y)</span> </span>&#123;<br>    <span class="hljs-keyword">if</span> (!cur) <span class="hljs-keyword">return</span> (<span class="hljs-type">void</span>) (x = <span class="hljs-literal">nullptr</span>, y = <span class="hljs-literal">nullptr</span>);<br>    <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">cmp</span>(val, cur-&gt;val)) &#123;  <span class="hljs-comment">// cur-&gt;val &gt;= val</span><br>        x = cur, <span class="hljs-built_in">lower_split</span>(x-&gt;right, val, x-&gt;right, y);<br>        x-&gt;<span class="hljs-built_in">pushup</span>();<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        y = cur, <span class="hljs-built_in">lower_split</span>(y-&gt;left, val, x, y-&gt;left);<br>        y-&gt;<span class="hljs-built_in">pushup</span>();<br>    &#125;<br>&#125;<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">upper_split</span><span class="hljs-params">(node* cur, <span class="hljs-type">const</span> T&amp; val, node*&amp; x, node*&amp; y)</span> </span>&#123;<br>    <span class="hljs-keyword">if</span> (!cur) <span class="hljs-keyword">return</span> (<span class="hljs-type">void</span>) (x = <span class="hljs-literal">nullptr</span>, y = <span class="hljs-literal">nullptr</span>);<br>    <span class="hljs-keyword">if</span> (val != cur-&gt;val &amp;&amp; !<span class="hljs-built_in">cmp</span>(val, cur-&gt;val)) &#123;  <span class="hljs-comment">// cur-&gt;val &gt;= val</span><br>        x = cur, <span class="hljs-built_in">upper_split</span>(x-&gt;right, val, x-&gt;right, y);<br>        x-&gt;<span class="hljs-built_in">pushup</span>();<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        y = cur, <span class="hljs-built_in">upper_split</span>(y-&gt;left, val, x, y-&gt;left);<br>        y-&gt;<span class="hljs-built_in">pushup</span>();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="合并">合并</h3>
+<p>合并操作是 FHQ-Treap 的重点。合并有点类似线段树的合并，但要维护 Treap 的堆性质。可以证明，这样做的期望时间复杂度是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>log</mi><mo>⁡</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(\log n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span> 的。</p>
+<p>合并函数接收两棵树，其中第一棵树的所有值小于第二棵树的所有值。合并时，只需将 <code>prio</code> 小的上提，递归合并其子树即可。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function">node* <span class="hljs-title">merge</span><span class="hljs-params">(node* x, node* y)</span> </span>&#123;<br>    <span class="hljs-keyword">if</span> (!x || !y) <span class="hljs-keyword">return</span> x ? x : y;<br>    <span class="hljs-keyword">if</span> (x-&gt;prio &lt; y-&gt;prio) &#123;<br>        x-&gt;right = <span class="hljs-built_in">merge</span>(x-&gt;right, y);<br>        <span class="hljs-keyword">return</span> x-&gt;<span class="hljs-built_in">pushup</span>();<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        y-&gt;left = <span class="hljs-built_in">merge</span>(x, y-&gt;left);<br>        <span class="hljs-keyword">return</span> y-&gt;<span class="hljs-built_in">pushup</span>();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="操作维护">操作维护</h2>
+<h3 id="插入操作-2">插入操作</h3>
+<p>理论上，插入操作可以抄 Treap 的。但是，既然写了 FHQ-Treap，有更简单的办法。</p>
+<p>我们把整棵树按插入值 <code>lower_split</code> 成两部分，则第一棵树中所有值小于等于插入值，第二棵树中所有值大于插入值，在两棵树之间新建节点，合并即可。</p>
+<p>需要注意，FHQ-Treap 为简便可以不维护 <code>cnt</code> 域，挂重复节点即可。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">insert</span><span class="hljs-params">(<span class="hljs-type">const</span> T&amp; val)</span> </span>&#123;<br>    <span class="hljs-keyword">if</span> (!root) &#123;<br>        root = <span class="hljs-keyword">new</span> <span class="hljs-built_in">node</span>(val);<br>        <span class="hljs-keyword">return</span>;<br>    &#125;<br>    node *x, *y; <span class="hljs-built_in">lower_split</span>(root, val, x, y); <br>    root = <span class="hljs-built_in">merge</span>(<span class="hljs-built_in">merge</span>(x, <span class="hljs-keyword">new</span> <span class="hljs-built_in">node</span>(val)), y);<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="删除操作-2">删除操作</h3>
+<p>按删除值 <code>split</code> 成三段：小于删除值的、等于删除值的、大于删除值的。删除等于删除值的节点即可。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">remove</span><span class="hljs-params">(<span class="hljs-type">const</span> T&amp; val)</span> </span>&#123;<br>    node *x, *y, *z;<br>    <span class="hljs-built_in">lower_split</span>(root, val, x, z); <br>    <span class="hljs-built_in">upper_split</span>(x, val, x, y);<br>    <span class="hljs-keyword">if</span> (!y) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    y = <span class="hljs-built_in">merge</span>(y-&gt;left, y-&gt;right);<br>    root = <span class="hljs-built_in">merge</span>(<span class="hljs-built_in">merge</span>(x, y), z);<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="查询排名">查询排名</h3>
+<p>按查询值 <code>upper_split</code>。由于排名是比它小的数的数量，查第一棵树的 <code>size</code> 即可。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">rank</span><span class="hljs-params">(<span class="hljs-type">const</span> T&amp; val)</span> </span>&#123;<br>    node *x, *y; <span class="hljs-built_in">upper_split</span>(root, val, x, y); <br>    <span class="hljs-type">int</span> rnk = x ? x-&gt;size : <span class="hljs-number">0</span>;<br>    root = <span class="hljs-built_in">merge</span>(x, y);<br>    <span class="hljs-keyword">return</span> rnk;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="完整实现-4">完整实现</h2>
+<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/paste/eklxjrl4">FHQ-Treap 完整实现</a></p>
+<h2 id="闲谈-3">闲谈</h2>
+<p>FHQ-Treap 非常好写，还可持久化，可维护区间，也很好学。</p>
+<p>但是它的常数很大，使用时，需要注意时限。同时，FHQ-Treap 也可以维护 <code>cnt</code> 域（见 OI-Wiki 的实现），使平衡树结构更为严谨。</p>
+<h1>Splay</h1>
+<p>大多数 OI 选手学习的平衡树。支持区间操作和维护 LCT，本身常数较大，不支持可持久化。</p>
+<h2 id="性质维护-3">性质维护</h2>
+<p>Splay 维护平衡的操作很简单：每一个被访问的节点都旋转到根。这一操作即 splay 操作。复杂度证明见 <a target="_blank" rel="noopener" href="https://oi-wiki.org/ds/splay/#splay-%E6%93%8D%E4%BD%9C%E7%9A%84%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6">OI-Wiki</a>。</p>
+<p>splay 操作基于左旋和右旋操作。可以去 AVL 树看一看。</p>
+<p>splay 操作中的每次旋转是一次 splay 步骤。splay 步骤的目的是把该节点旋转到距离根更近的位置。</p>
+<p>我们令该节点为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span></span></span></span>，父节点为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mi>a</mi></mrow><annotation encoding="application/x-tex">fa</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mord mathnormal">a</span></span></span></span>，祖父节点为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi></mrow><annotation encoding="application/x-tex">g</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span></span></span></span>，分类讨论：</p>
+<ol>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mi>a</mi></mrow><annotation encoding="application/x-tex">fa</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mord mathnormal">a</span></span></span></span> 为根节点，直接左旋或右旋 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span></span></span></span>。</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mi>a</mi></mrow><annotation encoding="application/x-tex">fa</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mord mathnormal">a</span></span></span></span> 不是根节点，且 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mi>a</mi><mo separator="true">,</mo><mi>x</mi><mo separator="true">,</mo><mi>g</mi></mrow><annotation encoding="application/x-tex">fa,x,g</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mord mathnormal">a</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span></span></span></span> 共线，对 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi></mrow><annotation encoding="application/x-tex">g</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span></span></span></span> 做左旋或右旋，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span></span></span></span> 反之；</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mi>a</mi></mrow><annotation encoding="application/x-tex">fa</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mord mathnormal">a</span></span></span></span> 不是根节点，且 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mi>a</mi><mo separator="true">,</mo><mi>x</mi><mo separator="true">,</mo><mi>g</mi></mrow><annotation encoding="application/x-tex">fa,x,g</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mord mathnormal">a</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span></span></span></span> 不共线，对 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span></span></span></span> 做双旋。</li>
+</ol>
+<p>通过这些步骤，可以完成 splay。代码比想象的精简很多，利用奇偶可以方便地完成。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title">rotate</span><span class="hljs-params">(node*&amp; x)</span> </span>&#123;<br>    node *y = x-&gt;parent, *z = y ? y-&gt;parent : <span class="hljs-literal">nullptr</span>;<br>    <span class="hljs-type">bool</span> chk = x-&gt;<span class="hljs-built_in">get</span>();<br>    y-&gt;<span class="hljs-built_in">child</span>(chk) = x-&gt;<span class="hljs-built_in">child</span>(chk ^ <span class="hljs-number">1</span>);<br>    <span class="hljs-keyword">if</span> (x-&gt;<span class="hljs-built_in">child</span>(chk ^ <span class="hljs-number">1</span>)) x-&gt;<span class="hljs-built_in">child</span>(chk ^ <span class="hljs-number">1</span>)-&gt;parent = y;<br>    x-&gt;<span class="hljs-built_in">child</span>(chk ^ <span class="hljs-number">1</span>) = y;<br>    y-&gt;parent = x, x-&gt;parent = z;<br>    <span class="hljs-keyword">if</span> (z) z-&gt;<span class="hljs-built_in">child</span>(y == z-&gt;right) = x;<br>    y-&gt;<span class="hljs-built_in">pushup</span>(), x-&gt;<span class="hljs-built_in">pushup</span>();<br>&#125;<br><span class="hljs-function">node* <span class="hljs-title">splay</span><span class="hljs-params">(node*&amp; x)</span> </span>&#123;<br>    <span class="hljs-keyword">for</span> (node* fa = x-&gt;parent; (fa = x-&gt;parent); <span class="hljs-built_in">rotate</span>(x)) &#123;<br>        <span class="hljs-keyword">if</span> (fa-&gt;parent) <span class="hljs-built_in">rotate</span>(x-&gt;<span class="hljs-built_in">get</span>() == fa-&gt;<span class="hljs-built_in">get</span>() ? fa : x);<br>    &#125;<br>    <span class="hljs-keyword">return</span> root = x;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="修改-insert-操作-2">修改 <code>insert</code> 操作</h2>
+<p>为了 <code>insert</code> 以后还能 splay，我们采用迭代实现。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">insert</span><span class="hljs-params">(<span class="hljs-type">const</span> T&amp; val)</span> </span>&#123;<br>    <span class="hljs-keyword">if</span> (!root) &#123;<br>        root = <span class="hljs-keyword">new</span> <span class="hljs-built_in">node</span>(val);<br>        <span class="hljs-keyword">return</span>;<br>    &#125;<br>    node *cur = root, *fa = <span class="hljs-literal">nullptr</span>;<br>    <span class="hljs-keyword">while</span> (cur) &#123;<br>        <span class="hljs-keyword">if</span> (cur &amp;&amp; val == cur-&gt;val) &#123;<br>            cur-&gt;cnt++, cur-&gt;<span class="hljs-built_in">pushup</span>(); <br>            <span class="hljs-keyword">if</span> (fa) fa-&gt;<span class="hljs-built_in">pushup</span>();<br>            <span class="hljs-built_in">splay</span>(cur);<br>            <span class="hljs-keyword">return</span>;<br>        &#125; <br>        fa = cur, cur = <span class="hljs-built_in">cmp</span>(val, cur-&gt;val) ? cur-&gt;left : cur-&gt;right;<br>    &#125;<br>    cur = <span class="hljs-keyword">new</span> <span class="hljs-built_in">node</span>(val), cur-&gt;parent = fa;<br>    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">cmp</span>(val, fa-&gt;val)) fa-&gt;left = cur;<br>    <span class="hljs-keyword">else</span> fa-&gt;right = cur;<br>    cur-&gt;<span class="hljs-built_in">pushup</span>(), fa-&gt;<span class="hljs-built_in">pushup</span>();<br>    <span class="hljs-built_in">splay</span>(cur);<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="修改-remove-操作-2">修改 <code>remove</code> 操作</h2>
+<p>前置知识：如何合并两棵 splay 树？第一棵树的所有元素小于第二棵的所有元素。</p>
+<hr>
+<p>我们只需要把第一棵树中的最大值 splay 到根，将其右孩子设置为第二棵树的根即可。</p>
+<p>把该节点 splay 到根。分类讨论：</p>
+<ol>
+<li>单节点，直接删除；</li>
+<li>缺一个孩子，将另一个上提替代；</li>
+<li>有两个孩子，合并两棵子树即可（看看前置知识）。</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">remove</span><span class="hljs-params">(<span class="hljs-type">const</span> T&amp; val)</span> </span>&#123;<br>    <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">splay</span>(val)) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    node *cur = root;<br>    <span class="hljs-keyword">if</span> (cur-&gt;cnt &gt; <span class="hljs-number">1</span>) &#123;<br>        cur-&gt;cnt--, cur-&gt;<span class="hljs-built_in">pushup</span>();<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>    &#125;<br>    <span class="hljs-keyword">if</span> (!cur-&gt;left &amp;&amp; !cur-&gt;right) &#123;<br>        <span class="hljs-keyword">delete</span> cur;<br>        root = <span class="hljs-literal">nullptr</span>;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>    &#125;<br>    <span class="hljs-keyword">if</span> (!cur-&gt;left) &#123;<br>        root = cur-&gt;right;<br>        root-&gt;parent = <span class="hljs-literal">nullptr</span>;<br>    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!cur-&gt;right) &#123;<br>        root = cur-&gt;left;<br>        root-&gt;parent = <span class="hljs-literal">nullptr</span>;<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        node* pre = <span class="hljs-built_in">root_pre</span>();<br>        cur-&gt;right-&gt;parent = pre, pre-&gt;right = cur-&gt;right;<br>        root-&gt;<span class="hljs-built_in">pushup</span>();<br>    &#125;<br>    <span class="hljs-keyword">delete</span> cur;<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>其他还有一些修改。看代码即可理解。</p>
+<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/paste/icu3wgc5">Splay 完整实现</a></p>
+<h2 id="闲谈-4">闲谈</h2>
+<p>Splay 的结构使其容易维护区间操作。维护 LCT 时也常用这种平衡树的魔改版（甚至码量还更小）。</p>
+<p>但是常数确实大（也许是我实现的原因），和 FHQ-Treap 差不多了。</p>
+<h1>其他平衡树</h1>
+<h2 id="替罪羊树">替罪羊树</h2>
+<p>如果失衡就暴力重构。复杂度均摊 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>log</mi><mo>⁡</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(\log n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span>。</p>
+<h2 id="WBLT">WBLT</h2>
+<p>其实这东西已经不是 BST 了。</p>
+<p>一种 Leafy Tree，常数小，可以维护区间操作，支持可持久化，是好东西。没看懂。</p>
+<h2 id="红黑树">红黑树</h2>
+<p>工程中平衡树的主力，常数小。本质是 B 树变形。没看懂。</p>
+<p>红黑树有一些变形，如左偏红黑树或 AA 树。码量也较多。</p>
+<h1>平衡树的替代品</h1>
+<p>这一部分简要介绍一下与 BST 无关的数据结构或 C++ 的内置数据结构。</p>
+<h2 id="块状链表">块状链表</h2>
+<p>整体复杂度是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><msqrt><mi>n</mi></msqrt><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n \sqrt{n})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0503em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8003em;"><span class="svg-align" style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord" style="padding-left:0.833em;"><span class="mord mathnormal">n</span></span></span><span style="top:-2.7603em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail" style="min-width:0.853em;height:1.08em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="1.08em" viewBox="0 0 400000 1080" preserveAspectRatio="xMinYMin slice"><path d="M95,702
+c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14
+c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54
+c44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10
+s173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429
+c69,-144,104.5,-217.7,106.5,-221
+l0 -0
+c5.3,-9.3,12,-14,20,-14
+H400000v40H845.2724
+s-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7
+c-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z
+M834 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2397em;"><span></span></span></span></span></span><span class="mclose">)</span></span></span></span> 的。</p>
+<p>思想就是链表套分块，用一个 <code>list&lt;vector&lt;T&gt;&gt;</code> 就可以很方便地维护，整体维护有序。代码量比平衡树小很多。</p>
+<p>在块内大小超过 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msqrt><mi>n</mi></msqrt></mrow><annotation encoding="application/x-tex">\sqrt{n}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.04em;vertical-align:-0.2397em;"></span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8003em;"><span class="svg-align" style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord" style="padding-left:0.833em;"><span class="mord mathnormal">n</span></span></span><span style="top:-2.7603em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail" style="min-width:0.853em;height:1.08em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="1.08em" viewBox="0 0 400000 1080" preserveAspectRatio="xMinYMin slice"><path d="M95,702
+c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14
+c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54
+c44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10
+s173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429
+c69,-144,104.5,-217.7,106.5,-221
+l0 -0
+c5.3,-9.3,12,-14,20,-14
+H400000v40H845.2724
+s-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7
+c-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z
+M834 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2397em;"><span></span></span></span></span></span></span></span></span> 时分裂以维护复杂度。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cpp">lst.<span class="hljs-built_in">emplace</span>(<span class="hljs-built_in">next</span>(it), it-&gt;<span class="hljs-built_in">begin</span>() + (lim &gt;&gt; <span class="hljs-number">1</span>), it-&gt;<span class="hljs-built_in">end</span>());<br>it-&gt;<span class="hljs-built_in">erase</span>(it-&gt;<span class="hljs-built_in">begin</span>() + (lim &gt;&gt; <span class="hljs-number">1</span>), it-&gt;<span class="hljs-built_in">end</span>());<br></code></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/paste/cm9vhd9j">块状链表完整实现</a></p>
+<h2 id="01-Trie">01-Trie</h2>
+<p>把数字二进制分解，用字典树维护，本质是值域为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mi>w</mi></msup></mrow><annotation encoding="application/x-tex">2^w</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6644em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02691em;">w</span></span></span></span></span></span></span></span></span></span></span> 的权值线段树。常数较小，但是空间带 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>log</mi><mo>⁡</mo></mrow><annotation encoding="application/x-tex">\log</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span></span></span></span>。</p>
+<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/article/4clc84vk">这篇题解</a>使用类似后缀树的方法将空间压缩到了线性。这样 01-Trie 就能对标平衡树操作了。还能可持久化。</p>
+<h2 id="C-内置">C++ 内置</h2>
+<h3 id="gnu-pbds-tree">__gnu_pbds::tree</h3>
+<p><code>pbds</code>  实现了一个平衡树，采用红黑树或 Splay 树。在编写可重平衡树时，使用如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;ext/pb_ds/assoc_container.hpp&gt;</span>  </span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;ext/pb_ds/tree_policy.hpp&gt;</span></span><br><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> __gnu_pbds;<br>tree&lt;pair&lt;T, <span class="hljs-type">int</span>&gt;, null_type, less&lt;pair&lt;T, <span class="hljs-type">int</span>&gt;&gt;, rb_tree_tag, tree_order_statistics_node_update&gt; tr;<br></code></pre></td></tr></table></figure>
+<p><code>pair</code> 的第一个元素存储数据，第二个元素该元素的标号，以维护可重。</p>
+<p>详情见 <a target="_blank" rel="noopener" href="https://oi-wiki.org/lang/pb-ds/tree/">OI Wiki</a>，不再赘述。</p>
+<h3 id="gnu-cxx-rope">__gnu_cxx::rope</h3>
+<p><code>pbds</code> 的“块状链表”实现。实际上，<code>rope</code>  的内部实现是可持久化平衡树，这使它天然支持可持久化。但是，<code>rope</code> 常数和空间大，比赛慎用。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;ext/rope&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> __gnu_cxx;<br><br>rope&lt;T&gt; tr;<br></code></pre></td></tr></table></figure>
+<p>具体使用见 <a target="_blank" rel="noopener" href="https://oi-wiki.org/ds/block-list/#stl-%E4%B8%AD%E7%9A%84-rope">OI Wiki</a>。</p>
+<h2 id="Sorted-Containers">Sorted Containers</h2>
+<p><code>sortedcontainers</code> 是 Python3 的第三方库，可以实现普通平衡树的功能。</p>
+<p><code>sortedcontainers</code> 实现了 <code>SortedList</code>，支持各类平衡树的操作。据说复杂度是均摊 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>log</mi><mo>⁡</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(\log n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span>。</p>
+<p>具体方法比较复杂，可以看 <a target="_blank" rel="noopener" href="https://www.zhihu.com/question/593450942">这篇知乎讨论</a>。我试着实现一个 <code>sorted_vector</code>，最后放弃了。（因为 <code>sortedcontainers</code> 的 Pythonic 拿 C++ 写太难受了）</p>
+<p>去平衡树模板题交了几发，发现它根本不像市面上说的与 C++ 速度相当，反而跑得飞慢（也许是 python 的读入慢）。加强版更是听取 TLE 声一片。</p>
+<ul>
+<li>
+<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/record/147050148">普通版提交记录</a></p>
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/record/147050387">加强版提交记录</a></p>
+</li>
+</ul>
+<h1>测试</h1>
+<p>叠甲：所有测试结果的实现代码均为本人自己的实现（平衡树全部用指针，替罪羊树 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mn>0.75</mn></mrow><annotation encoding="application/x-tex">\alpha=0.75</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0.75</span></span></span></span>），请勿上升到该数据结构！</p>
+<h2 id="P3369-普通版">P3369 普通版</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">数据结构</th>
+<th style="text-align:center">总运行时间</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">AVL</td>
+<td style="text-align:center">195ms</td>
+</tr>
+<tr>
+<td style="text-align:center">Treap</td>
+<td style="text-align:center">213ms</td>
+</tr>
+<tr>
+<td style="text-align:center">权值线段树</td>
+<td style="text-align:center">247ms</td>
+</tr>
+<tr>
+<td style="text-align:center">FHQ-Treap</td>
+<td style="text-align:center">254ms</td>
+</tr>
+<tr>
+<td style="text-align:center">Splay</td>
+<td style="text-align:center">289ms</td>
+</tr>
+<tr>
+<td style="text-align:center">块状链表</td>
+<td style="text-align:center">451ms</td>
+</tr>
+</tbody>
+</table>
+<h2 id="P6136-加强版">P6136 加强版</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">数据结构</th>
+<th style="text-align:center">总运行时间</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">AVL</td>
+<td style="text-align:center">10.10s</td>
+</tr>
+<tr>
+<td style="text-align:center">Treap</td>
+<td style="text-align:center">13.52s</td>
+</tr>
+<tr>
+<td style="text-align:center">Splay</td>
+<td style="text-align:center">15.32s</td>
+</tr>
+<tr>
+<td style="text-align:center">FHQ-Treap</td>
+<td style="text-align:center">16.20s</td>
+</tr>
+<tr>
+<td style="text-align:center">权值线段树</td>
+<td style="text-align:center">无法通过（离线算法）</td>
+</tr>
+<tr>
+<td style="text-align:center">块状链表</td>
+<td style="text-align:center">无法通过（TLE）</td>
+</tr>
+</tbody>
+</table>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E7%90%86%E8%AE%BA/" class="print-no-link">#理论</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>浅谈平衡树</div>
+      <div>http://example.com/2025/08/06/浅谈平衡树/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>stripe-python</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年8月6日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/08/06/%E5%B7%AE%E5%88%86%E7%BA%A6%E6%9D%9F%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="差分约束复习笔记">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">差分约束复习笔记</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/08/06/%E6%B5%85%E8%B0%88%E6%8B%AC%E5%8F%B7%E5%BA%8F%E5%88%97/" title="浅谈括号序列">
+                        <span class="hidden-mobile">浅谈括号序列</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
