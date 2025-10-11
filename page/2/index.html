@@ -228,15 +228,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2025/08/06/%E5%AF%B9-AVL-%E6%A0%91%E7%9A%84%E6%89%A9%E5%B1%95%E5%BA%94%E7%94%A8/" target="_self">
-          对 AVL 树的扩展应用
+        <a href="/2025/08/06/%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%93%88%E5%B8%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" target="_self">
+          字符串哈希学习笔记
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/08/06/%E5%AF%B9-AVL-%E6%A0%91%E7%9A%84%E6%89%A9%E5%B1%95%E5%BA%94%E7%94%A8/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/08/06/%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%93%88%E5%B8%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" target="_self">
         <div>
-          前言 AVL 树是工程中常用的平衡树，其在大量查询方面具有优势。然而，AVL 树在 OI 中却没有特别地位。 笔者认为，AVL 树原理简单，比 OI 常用平衡树快很多，码量也不是很大。本文探究 AVL 树在 OI 领域的扩展应用。 AVL 树原理 AVL 的每个节点维护一个 high 域，表示子树的高度。AVL 需要维护 ∣highl−highr∣≤1|high_l-high_r|\le 1∣hi
+          字符串哈希 字符串哈希一般用于快速判断两个串是否相同。 常用的方法：对于字符串 sss，其哈希值为 (∑i=1nsi×bn−i) mod m(\sum_{i=1}^{n} s_i \times b^{n-i}) \bmod m (i=1∑n​si​×bn−i)modm 只需要 O(n)O(n)O(n) 计算。 一般 nnn 达到 10610^6106 时 mmm 需要开到 101510^{15}1
         </div>
       </a>
 
@@ -268,15 +268,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2025/08/06/%E7%A6%BB%E7%BA%BF%E4%BA%8C%E7%BB%B4%E6%95%B0%E7%82%B9%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" target="_self">
-          离线二维数点学习笔记
+        <a href="/2025/08/06/%E5%AF%B9-AVL-%E6%A0%91%E7%9A%84%E6%89%A9%E5%B1%95%E5%BA%94%E7%94%A8/" target="_self">
+          对 AVL 树的扩展应用
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/08/06/%E7%A6%BB%E7%BA%BF%E4%BA%8C%E7%BB%B4%E6%95%B0%E7%82%B9%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/08/06/%E5%AF%B9-AVL-%E6%A0%91%E7%9A%84%E6%89%A9%E5%B1%95%E5%BA%94%E7%94%A8/" target="_self">
         <div>
-          最近 % 你赛出了好几个这样的问题。 算法思想 将询问离线，按一个端点排序，用另一维作扫描线统计答案。统计时，按题目选择权值 / 序列树状数组或线段树，复杂度为 O(nlog⁡n)O(n\log n)O(nlogn) 级别。 例题 P10814 【模板】离线二维数点 板子题。注意到 ansl,r=ans1,r−ans1,l−1ans_{l,r}=ans_{1,r}-ans_{1,l-1}ansl,
+          前言 AVL 树是工程中常用的平衡树，其在大量查询方面具有优势。然而，AVL 树在 OI 中却没有特别地位。 笔者认为，AVL 树原理简单，比 OI 常用平衡树快很多，码量也不是很大。本文探究 AVL 树在 OI 领域的扩展应用。 AVL 树原理 AVL 的每个节点维护一个 high 域，表示子树的高度。AVL 需要维护 ∣highl−highr∣≤1|high_l-high_r|\le 1∣hi
         </div>
       </a>
 
@@ -348,86 +348,6 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2025/08/06/%E8%83%8C%E5%8C%85-DP/" target="_self">
-          背包 DP
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/08/06/%E8%83%8C%E5%8C%85-DP/" target="_self">
-        <div>
-          之前打 ABC 发现自己背包掌握的不是很熟练，所以写这一篇复习笔记。 基本模型 有 nnn 种物品和一个容量为 mmm 的背包，每种物品有重量 wiw_iwi​ 与价值 viv_ivi​ 两种属性，要求选若干个物品，使它们的重量之和 ≤m\le m≤m 且 ∑v\sum v∑v 最大。 各种背包都是在这个模型下的。 01 背包 每种物品有且仅有一个。 设 dpi,jdp_{i, j}dpi,j​
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-08-06 00:00" pubdate>
-              2025-08-06
-            </time>
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E7%90%86%E8%AE%BA/">#理论</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2025/08/06/%E5%8F%AF%E6%8C%81%E4%B9%85%E5%8C%96%E7%BA%BF%E6%AE%B5%E6%A0%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" target="_self">
-          可持久化线段树学习笔记
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/08/06/%E5%8F%AF%E6%8C%81%E4%B9%85%E5%8C%96%E7%BA%BF%E6%AE%B5%E6%A0%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" target="_self">
-        <div>
-          感觉将主席树的很多教程都不讲权值线段树，然后本蒟蒻花了半天时间理解主席树维护的线段树和区间线段树有什么区别。 权值线段树 普通线段树解决的问题：  对序列上一段区间做修改； 对序列上一段区间查询信息。  而权值线段树把这个序列变成了值域，相当于维护原序列的出现次数。那么权值线段树对值域做维护，自然也就能支持对值域的操作。我造了一个板子题 SPN D-Struct 02，下面写写这题题解： 对值域建
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-08-06 00:00" pubdate>
-              2025-08-06
-            </time>
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E7%90%86%E8%AE%BA/">#理论</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
         <a href="/2025/08/06/%E6%B5%85%E8%B0%88%E5%BC%BA%E5%BC%80%E6%A0%B9%E5%85%AC%E5%BC%8F/" target="_self">
           浅谈强开根公式
         </a>
@@ -455,6 +375,86 @@
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/%E5%AD%A6%E4%B9%A0/">#学习</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2025/08/06/%E7%A6%BB%E7%BA%BF%E4%BA%8C%E7%BB%B4%E6%95%B0%E7%82%B9%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" target="_self">
+          离线二维数点学习笔记
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/08/06/%E7%A6%BB%E7%BA%BF%E4%BA%8C%E7%BB%B4%E6%95%B0%E7%82%B9%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" target="_self">
+        <div>
+          最近 % 你赛出了好几个这样的问题。 算法思想 将询问离线，按一个端点排序，用另一维作扫描线统计答案。统计时，按题目选择权值 / 序列树状数组或线段树，复杂度为 O(nlog⁡n)O(n\log n)O(nlogn) 级别。 例题 P10814 【模板】离线二维数点 板子题。注意到 ansl,r=ans1,r−ans1,l−1ans_{l,r}=ans_{1,r}-ans_{1,l-1}ansl,
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-08-06 00:00" pubdate>
+              2025-08-06
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E7%90%86%E8%AE%BA/">#理论</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2025/08/06/%E8%83%8C%E5%8C%85-DP/" target="_self">
+          背包 DP
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/08/06/%E8%83%8C%E5%8C%85-DP/" target="_self">
+        <div>
+          之前打 ABC 发现自己背包掌握的不是很熟练，所以写这一篇复习笔记。 基本模型 有 nnn 种物品和一个容量为 mmm 的背包，每种物品有重量 wiw_iwi​ 与价值 viv_ivi​ 两种属性，要求选若干个物品，使它们的重量之和 ≤m\le m≤m 且 ∑v\sum v∑v 最大。 各种背包都是在这个模型下的。 01 背包 每种物品有且仅有一个。 设 dpi,jdp_{i, j}dpi,j​
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-08-06 00:00" pubdate>
+              2025-08-06
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E7%90%86%E8%AE%BA/">#理论</a>
             
           </div>
         
