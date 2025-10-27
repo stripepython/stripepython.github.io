@@ -67,7 +67,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":80,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -135,18 +135,6 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/categories/" target="_self">
-                <i class="iconfont icon-category-fill"></i>
-                <span>分类</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
               <a class="nav-link" href="/tags/" target="_self">
                 <i class="iconfont icon-tags-fill"></i>
                 <span>标签</span>
@@ -162,6 +150,18 @@
               <a class="nav-link" href="/about/" target="_self">
                 <i class="iconfont icon-user-fill"></i>
                 <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
               </a>
             </li>
           
@@ -598,15 +598,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2025/08/06/%E5%85%B3%E4%BA%8E%E7%89%B9%E6%AE%8A%E8%A7%92%E6%B3%95%E7%9A%84%E8%BF%9B%E9%98%B6%E6%8E%A2%E7%A9%B6/" target="_self">
-          关于特殊角法的进阶探究
+        <a href="/2025/08/06/%E5%8F%AF%E6%8C%81%E4%B9%85%E5%8C%96%E7%BA%BF%E6%AE%B5%E6%A0%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" target="_self">
+          可持久化线段树学习笔记
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/08/06/%E5%85%B3%E4%BA%8E%E7%89%B9%E6%AE%8A%E8%A7%92%E6%B3%95%E7%9A%84%E8%BF%9B%E9%98%B6%E6%8E%A2%E7%A9%B6/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/08/06/%E5%8F%AF%E6%8C%81%E4%B9%85%E5%8C%96%E7%BA%BF%E6%AE%B5%E6%A0%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" target="_self">
         <div>
-          众所周知，特殊角法是初中几何的降维打击。其在初中的主要体现为 12345 模型。本文对特殊角进一步探究，使之可以适应所有题型。 初步探究 这是本文发布前，笔者关于特殊系的一些探究。    角度 对边 临边 斜边     α\alphaα aaa bbb ccc   α2\dfrac{\alpha}{2}2α​ c−b\sqrt{c-b}c−b​ c+b\sqrt{c+b}c+b​ 2c\sqrt{
+          感觉将主席树的很多教程都不讲权值线段树，然后本蒟蒻花了半天时间理解主席树维护的线段树和区间线段树有什么区别。 权值线段树 普通线段树解决的问题：  对序列上一段区间做修改； 对序列上一段区间查询信息。  而权值线段树把这个序列变成了值域，相当于维护原序列的出现次数。那么权值线段树对值域做维护，自然也就能支持对值域的操作。我造了一个板子题 SPN D-Struct 02，下面写写这题题解： 对值域建
         </div>
       </a>
 
@@ -624,7 +624,7 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/%E5%AD%A6%E4%B9%A0/">#学习</a>
+              <a href="/tags/%E7%90%86%E8%AE%BA/">#理论</a>
             
           </div>
         
